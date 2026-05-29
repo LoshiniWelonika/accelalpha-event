@@ -5,71 +5,106 @@ from openai import OpenAI
 import os
 from datetime import datetime, timezone
 
+# Load environment variables
 load_dotenv()
 
+# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# OpenRouter client
+client = OpenAI(
+    api_key=os.getenv("OPENROUTER_API_KEY"),
+    base_url="https://openrouter.ai/api/v1"
+)
 
 
 def load_agenda():
+    """
+    Load agenda.txt content
+    """
     with open("agenda.txt", "r", encoding="utf-8") as file:
-        return file.readlines()
+        return file.read().split("\n\n")
 
 
 def match_session(user_focus):
+    """
+    Match user interests with the most relevant session
+    """
     agenda = load_agenda()
 
     best_match = agenda[0]
+    highest_score = 0
 
-    user_focus = user_focus.lower()
+    user_words = user_focus.lower().split()
 
     for session in agenda:
-        if any(word in session.lower() for word in user_focus.split()):
+        score = 0
+
+        for word in user_words:
+            if word in session.lower():
+                score += 1
+
+        if score > highest_score:
+            highest_score = score
             best_match = session
 
     return best_match
 
 
 def generate_email(name, focus, matched_session):
+    """
+    Generate personalized invitation email
+    """
+
     prompt = f"""
 You are a professional B2B conference assistant.
 
 STRICT RULES:
-- ONLY use information provided below.
+- ONLY use information from the provided session.
 - DO NOT invent speakers.
 - DO NOT invent times.
 - DO NOT invent sessions.
 - DO NOT hallucinate any details.
-- ONLY mention the matched session exactly as written.
+- Keep the email professional and concise.
+- Mention why the session matches the visitor's interests.
+- Mention the session title, speaker, and time naturally.
+- Keep the email under 200 words.
 
-Matched Session:
+Matched Session Details:
 {matched_session}
 
 Visitor Name:
 {name}
 
-Visitor Focus:
+Visitor Interest:
 {focus}
 
-Write a professional invitation email in under 200 words.
+Write a personalized professional invitation email.
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4.1-mini",
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
-    )
+    try:
+        response = client.chat.completions.create(
+            model="openai/gpt-4o-mini",
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
 
-    return response.choices[0].message.content
+        return response.choices[0].message.content
+
+    except Exception as e:
+        return f"API Error: {str(e)}"
 
 
 def send_draft_via_mcp(email_address, email_body):
+    """
+    Simulate MCP email draft sending
+    """
+
     timestamp = datetime.now(timezone.utc)
 
     print("\n===== MCP EMAIL DRAFT =====")
@@ -82,26 +117,45 @@ def send_draft_via_mcp(email_address, email_body):
 
 @app.route("/generate-invite", methods=["POST"])
 def generate_invite():
-    data = request.json
+    """
+    API endpoint to generate invitation email
+    """
 
-    name = data.get("name")
-    email = data.get("email")
-    focus = data.get("focus")
+    try:
+        data = request.json
 
-    matched_session = match_session(focus)
+        name = data.get("name")
+        email = data.get("email")
+        focus = data.get("focus")
 
-    email_body = generate_email(
-        name,
-        focus,
-        matched_session
-    )
+        # Validation
+        if not name or not email or not focus:
+            return jsonify({
+                "error": "name, email, and focus are required"
+            }), 400
 
-    send_draft_via_mcp(email, email_body)
+        # Match relevant session
+        matched_session = match_session(focus)
 
-    return jsonify({
-        "matched_session": matched_session,
-        "email_body": email_body
-    })
+        # Generate AI email
+        email_body = generate_email(
+            name,
+            focus,
+            matched_session
+        )
+
+        # Simulate MCP email draft
+        send_draft_via_mcp(email, email_body)
+
+        return jsonify({
+            "matched_session": matched_session,
+            "email_body": email_body
+        })
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 
 if __name__ == "__main__":
