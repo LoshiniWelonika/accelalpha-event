@@ -1,0 +1,74 @@
+# Root .gitignore
+
+# =========================
+
+# FRONTEND (React/Vite)
+
+# =========================
+
+frontend/node_modules
+frontend/dist
+frontend/.vite
+
+# Logs
+
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+
+# Environment files
+
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.production.local
+
+# =========================
+
+# BACKEND (Flask/Python)
+
+# =========================
+
+backend/venv
+backend/**pycache**
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.Python
+
+# Flask cache
+
+backend/.pytest_cache
+
+# Environment variables
+
+backend/.env
+
+# =========================
+
+# OS FILES
+
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+
+# IDE FILES
+
+# =========================
+
+.vscode
+.idea
+
+# =========================
+
+# GENERAL
+
+# =========================
+
+*.log
+*.tmp
+*.swp
