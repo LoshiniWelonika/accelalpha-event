@@ -9,10 +9,15 @@ html {
   scroll-behavior: smooth;
 }
 
+*,
+*::before,
+*::after {
+  font-family: 'Inter', sans-serif;
+}
+
 body {
   background: #f8f9ff;
   color: #0b1c30;
-  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
