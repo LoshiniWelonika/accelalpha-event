@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from openai import OpenAI
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
 import os
 from datetime import datetime, timezone
 
@@ -18,38 +20,32 @@ client = OpenAI(
     base_url="https://openrouter.ai/api/v1"
 )
 
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
 def load_agenda():
-    """
-    Load agenda.txt content
-    """
     with open("agenda.txt", "r", encoding="utf-8") as file:
-        return file.read().split("\n\n")
+        content = file.read()
+
+    sessions = content.strip().split("\n\n")
+    return [s.strip() for s in sessions if s.strip()]
 
 
 def match_session(user_focus):
-    """
-    Match user interests with the most relevant session
-    """
     agenda = load_agenda()
 
-    best_match = agenda[0]
-    highest_score = 0
+    # Encode sessions once
+    agenda_embeddings = model.encode(agenda)
 
-    user_words = user_focus.lower().split()
+    # Encode user query
+    user_embedding = model.encode([user_focus])
 
-    for session in agenda:
-        score = 0
+    # Compute cosine similarity
+    similarities = cosine_similarity(user_embedding, agenda_embeddings)[0]
 
-        for word in user_words:
-            if word in session.lower():
-                score += 1
+    # Get best match
+    best_index = similarities.argmax()
 
-        if score > highest_score:
-            highest_score = score
-            best_match = session
-
-    return best_match
+    return agenda[best_index]
 
 
 def generate_email(name, focus, matched_session):
