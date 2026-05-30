@@ -4,7 +4,6 @@ function RegistrationForm() {
   const [form, setForm] = useState({ name: '', email: '', focus: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  const [inviteResponse, setInviteResponse] = useState(null);
   const [submitted, setSubmitted] = useState(false);
 
   const apiBaseUrl = (import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:5000').replace(/\/$/, '');
@@ -33,8 +32,6 @@ function RegistrationForm() {
       if (!response.ok) {
         throw new Error(data.error || 'Unable to submit registration. Please try again.');
       }
-
-      setInviteResponse(data);
       setSubmitted(true);
     } catch (error) {
       setSubmitError(error.message || 'Unable to submit registration. Please try again.');
@@ -47,7 +44,6 @@ function RegistrationForm() {
     setForm({ name: '', email: '', focus: '' });
     setSubmitError('');
     setSubmitted(false);
-    setInviteResponse(null);
   }
 
   if (submitted) {
@@ -55,11 +51,7 @@ function RegistrationForm() {
       <div className="register-card register-card--success text-center">
         <h3 className="register-card-title mb-2">Registration Received</h3>
         <p className="register-card-copy">Your invitation draft has been generated successfully.</p>
-        {inviteResponse?.matched_session && (
-          <p className="register-card-copy register-card-copy--result">
-            <strong>Recommended Session:</strong> {inviteResponse.matched_session}
-          </p>
-        )}
+        {/* No backend messages shown; display only a generic success message per design. */}
         <button type="button" onClick={resetForm} className="register-reset">Submit Another Response</button>
       </div>
     );
