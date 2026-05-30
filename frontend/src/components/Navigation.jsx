@@ -1,5 +1,5 @@
-import accelalphaLogo from "../assets/accelalpha.svg";
-import oracleLogo from "../assets/oracle.svg";
+import accelalphaLogo from "../assets/accelalpha.png";
+import oracleLogo from "../assets/oracle.png";
 
 function Navigation() {
   return (
@@ -9,7 +9,7 @@ function Navigation() {
           <div className="flex items-center gap-4">
             <img src={accelalphaLogo} alt="Accelalpha" className="h-8 md:h-10 object-contain" />
             <span className="w-px h-8 md:h-10 bg-primary/20" aria-hidden="true" />
-            <img src={oracleLogo} alt="Oracle" className="h-8 md:h-10 object-contain" />
+            <img src={oracleLogo} alt="Oracle" className="h-12 md:h-14 object-contain" />
           </div>
         </div>
 
