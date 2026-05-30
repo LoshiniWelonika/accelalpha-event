@@ -35,7 +35,7 @@ function HeroSection() {
   }
 
   return (
-    <header className="hero-banner relative min-h-[88vh] overflow-hidden">
+    <header className="hero-banner relative min-h-[88vh] overflow-hidden animate-on-scroll">
       <div className="hero-banner__media">
         {slides.map((slide, index) => (
           <img

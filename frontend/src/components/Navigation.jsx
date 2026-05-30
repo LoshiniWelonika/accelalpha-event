@@ -1,11 +1,16 @@
+import accelalphaLogo from "../assets/accelalpha.svg";
+import oracleLogo from "../assets/oracle.svg";
+
 function Navigation() {
   return (
     <nav className="sticky top-0 w-full z-[100] bg-surface/80 backdrop-blur-md border-b border-primary/10 shadow-sm">
       <div className="flex justify-between items-center max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-4">
         <div className="flex items-center gap-4">
-          <span className="font-headline-md text-headline-md font-extrabold text-primary tracking-tight">
-            Navigate Gulf
-          </span>
+          <div className="flex items-center gap-4">
+            <img src={accelalphaLogo} alt="Accelalpha" className="h-8 md:h-10 object-contain" />
+            <span className="w-px h-8 md:h-10 bg-primary/20" aria-hidden="true" />
+            <img src={oracleLogo} alt="Oracle" className="h-8 md:h-10 object-contain" />
+          </div>
         </div>
 
         <div className="hidden md:flex items-center gap-8">

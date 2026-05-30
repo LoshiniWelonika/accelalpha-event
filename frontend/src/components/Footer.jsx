@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="site-footer py-12">
+    <footer className="site-footer py-12 animate-on-scroll">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop site-footer-grid">
         <div className="site-footer-brand">
           <div className="site-footer-title">Cogent Solutions™</div>

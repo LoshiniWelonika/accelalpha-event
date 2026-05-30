@@ -13,7 +13,7 @@ function AgendaSection() {
   ];
 
   return (
-    <section id="agenda" className="py-20 bg-white agenda-section">
+    <section id="agenda" className="py-20 bg-white agenda-section animate-on-scroll">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <h2 className="font-headline-md text-headline-md mb-2">The Summit Agenda</h2>
         <p className="text-secondary mb-8">A strategic journey through the next decade of supply chain evolution.</p>

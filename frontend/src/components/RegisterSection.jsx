@@ -2,7 +2,7 @@ import RegistrationForm from './RegistrationForm';
 
 function RegisterSection() {
   return (
-    <section id="register" className="register-section py-20">
+    <section id="register" className="register-section py-20 animate-on-scroll">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop register-shell">
         <div className="register-copy">
           <h2 className="register-heading">Secure Your Place at the Forefront of Logistics</h2>
