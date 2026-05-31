@@ -16,7 +16,6 @@ function Navigation() {
         <div className="hidden md:flex items-center gap-8">
           <a className="font-label-bold text-label-bold uppercase text-secondary hover:text-primary transition-colors" href="#speakers">Speakers</a>
           <a className="font-label-bold text-label-bold uppercase text-secondary hover:text-primary transition-colors" href="#agenda">Agenda</a>
-          <a className="font-label-bold text-label-bold uppercase text-secondary hover:text-primary transition-colors" href="#sponsors">Sponsors</a>
           <a className="font-label-bold text-label-bold uppercase text-secondary hover:text-primary transition-colors" href="#faq">FAQ</a>
           <a className="red-gradient-btn px-6 py-2.5 rounded-lg text-on-primary font-label-bold uppercase shadow-md active:scale-95 transition-transform" href="#register">
             Register Now
